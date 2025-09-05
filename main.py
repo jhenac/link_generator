@@ -1,33 +1,23 @@
 from datetime import datetime, timedelta
 from link_generator import LinkGenerator
+import pandas as pd
 
-start_date = datetime(2025, 8, 13) # Year, Month, Day
-end_date = datetime(2025, 9, 13) # Year, Month, Day
+start_date = datetime(2025, 9, 10) # Year, Month, Day
+end_date = datetime(2025, 10, 10) # Year, Month, Day
 
-link_generator1 = LinkGenerator(
-    start_date=start_date,
-    end_date=end_date,
-    base_url_csv='input/base_urls1.csv',
-    output_csv='output/rfc_links1.csv'
+base_csvs = [
+    'input/base_urls1.csv',
+    'input/base_urls2.csv',
+    'input/base_urls2.csv'
+]
 
-)
+all_dfs = []
 
-link_generator2 = LinkGenerator(
-    start_date=start_date,
-    end_date=end_date,
-    base_url_csv='input/base_urls2.csv',
-    output_csv='output/rfc_links2.csv'
+for base_csv in base_csvs:
+    generator = LinkGenerator(start_date, end_date, base_csv)
+    df = generator.generate_links()
+    all_dfs.append(df)
 
-)
+combined_df = pd.concat(all_dfs, ignore_index=True)
 
-link_generator3 = LinkGenerator(
-    start_date=start_date,
-    end_date=end_date,
-    base_url_csv='input/base_urls3.csv',
-    output_csv='output/rfc_links3.csv'
-
-)
-
-link_generator1.generate_links()
-link_generator2.generate_links()
-link_generator3.generate_links()
+combined_df.to_csv('rfc_links.csv', index=False)

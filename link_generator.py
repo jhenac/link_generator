@@ -3,11 +3,10 @@ from datetime import datetime, timedelta
 
 class LinkGenerator:
 
-    def __init__(self, start_date, end_date, base_url_csv, output_csv):
+    def __init__(self, start_date, end_date, base_url_csv):
         self.start_date = start_date
         self.end_date = end_date
         self.base_url_csv = base_url_csv
-        self.output_csv = output_csv
 
     def generate_links(self):
         urls_df = pd.read_csv(self.base_url_csv)
@@ -24,4 +23,4 @@ class LinkGenerator:
                 current_date += timedelta(days=1)
 
         df = pd.DataFrame(url_list, columns=['URL'])
-        df.to_csv(self.output_csv, index=False)
+        return df
